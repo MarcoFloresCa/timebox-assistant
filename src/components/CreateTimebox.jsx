@@ -24,7 +24,7 @@ export default function CreateTimebox({ uid, onSuccess, onCancel }) {
       setDescription("");
     } catch (error) {
       console.error("Error creating timebox:", error);
-      alert("Error al crear timebox");
+      alert("Error al crear el timebox");
     } finally {
       setLoading(false);
     }

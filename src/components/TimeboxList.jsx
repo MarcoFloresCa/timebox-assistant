@@ -72,7 +72,10 @@ export default function TimeboxList({ uid, refreshTrigger }) {
             </p>
           )}
           <div className="text-xs text-slate-600">
-            Creado: {timebox.createdAt?.toDate().toLocaleDateString()}
+            Creado: {timebox.createdAt?.toDate
+              ? timebox.createdAt.toDate().toLocaleDateString()
+              : "—"
+            }
           </div>
         </div>
       ))}

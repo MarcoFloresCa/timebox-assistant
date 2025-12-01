@@ -31,7 +31,7 @@ export default function CreateTimebox({ uid, onSuccess, onCancel }) {
   };
 
   return (
-    <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-xl w-full max-w-md">
+    <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-xl w-full max-w-lg">
       <h2 className="text-xl font-bold text-white mb-4">Nuevo Timebox</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

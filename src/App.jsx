@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import {
+  auth,
+  provider,
+  signInWithPopup,
+  signOut,
+  saveUser,
+} from "./services/firebase";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [user, setUser] = useState(null);
+
+  const loginGoogle = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      setUser(result.user);
+      await saveUser(result.user);
+    } catch (e) {
+      console.error(e);
+      alert("Error al iniciar sesión");
+    }
+  };
+
+  const logout = async () => {
+    await signOut(auth);
+    setUser(null);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
+      <div className="p-6 rounded-xl bg-slate-900 shadow-xl space-y-4 w-full max-w-sm border border-slate-700">
+        <h1 className="text-xl font-bold text-center">Timebox Assistant ⏱️</h1>
 
-export default App
+        {!user ? (
+          <button
+            onClick={loginGoogle}
+            className="w-full py-2 bg-emerald-500 hover:bg-emerald-400 rounded-lg font-medium"
+          >
+            Iniciar sesión con Google
+          </button>
+        ) : (
+          <>
+            <p className="text-sm">
+              Bienvenido:  
+              <br />
+              <span className="font-semibold">{user.email}</span>
+            </p>
+
+            <button
+              onClick={logout}
+              className="w-full py-2 bg-red-500 hover:bg-red-400 rounded-lg font-medium"
+            >
+              Cerrar sesión
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

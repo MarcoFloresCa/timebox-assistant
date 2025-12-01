@@ -21,6 +21,12 @@ import {
   addDoc,
   deleteDoc,
   serverTimestamp,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  increment,
+  orderBy,
 } from "firebase/firestore";
 
 // Tu config REAL de Firebase
@@ -58,6 +64,12 @@ export {
   addDoc,
   deleteDoc,
   serverTimestamp,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  increment,
+  orderBy,
 };
 
 export async function saveUser(user) {
@@ -82,4 +94,55 @@ export async function saveUser(user) {
       createdAt: serverTimestamp(),
     });
   }
+}
+
+// --- Timeboxes ---
+export async function createTimebox(uid, data) {
+  const ref = collection(db, "users", uid, "timeboxes");
+  return await addDoc(ref, {
+    ...data,
+    createdAt: serverTimestamp(),
+  });
+}
+
+export async function getTimeboxes(uid) {
+  const ref = collection(db, "users", uid, "timeboxes");
+  const q = query(ref, orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+}
+
+export async function updateTimebox(uid, id, data) {
+  const ref = doc(db, "users", uid, "timeboxes", id);
+  await updateDoc(ref, data);
+}
+
+export async function deleteTimebox(uid, id) {
+  const ref = doc(db, "users", uid, "timeboxes", id);
+  await deleteDoc(ref);
+}
+
+// --- Tasks ---
+export async function createTask(uid, data) {
+  const ref = collection(db, "users", uid, "tasks");
+  return await addDoc(ref, {
+    ...data,
+    createdAt: serverTimestamp(),
+  });
+}
+
+// --- Daily Stats ---
+export async function updateDailyStats(uid, sessionDuration) {
+  const today = new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD local timezone safe
+  const ref = doc(db, "users", uid, "daily_stats", today);
+
+  await setDoc(
+    ref,
+    {
+      totalTime: increment(sessionDuration),
+      sessionsCount: increment(1),
+      lastUpdated: serverTimestamp(),
+    },
+    { merge: true }
+  );
 }

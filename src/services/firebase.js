@@ -32,13 +32,14 @@ import {
 // Tu config REAL de Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBtqYQ_C61sOeqslGsL77rCbbusnVhGDWA",
-  authDomain: "timebox-assistant-ed497.firebaseapp.com",
+  authDomain: "timebox-assistant-ed497.web.app",
   projectId: "timebox-assistant-ed497",
   storageBucket: "timebox-assistant-ed497.firebasestorage.app",
   messagingSenderId: "1012032243840",
   appId: "1:1012032243840:web:fb6e0386300dd2f7633e65",
   measurementId: "G-67DVBFD1JV"
 };
+
 
 
 // Inicializar app
